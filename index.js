@@ -11,18 +11,22 @@ app.use(express.json());
 const ejercicioRoutes = require('./routes/ejercicioRoutes');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 
-// Endpoint raíz (opcional antes de conectar)
+// Endpoint raíz
 app.get('/', (req, res) => {
   res.send('Servidor de ejerciciosniños-proyecto funcionando');
 });
 
 const PORT = process.env.PORT || 3000;
 
+// Conectar a MongoDB y arrancar el servidor
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ Conectado a MongoDB Atlas');
+
+    // Usar las rutas después de la conexión
     app.use('/api/ejercicios', ejercicioRoutes);
     app.use('/api/usuarios', usuarioRoutes);
+
     app.listen(PORT, () => {
       console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
     });
